@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Professional responsive registration page with AJAX username availability check and client-side validation.">
+  <title>Register | AuthPortal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+  <div class="bg-orb orb-one"></div>
+  <div class="bg-orb orb-two"></div>
+  <div class="bg-grid"></div>
+
+  <nav class="navbar navbar-expand-lg navbar-dark auth-navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="login.html">
+        <span class="brand-badge"><i class="fa-solid fa-shield-heart"></i></span>
+        <span>AuthPortal</span>
+      </a>
+
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2 pt-3 pt-lg-0">
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+          <li class="nav-item"><a class="btn btn-nav active" aria-current="page" href="register.html">Create Account</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="auth-shell">
+    <div class="container">
+      <div class="row min-vh-100 align-items-center g-4 py-5">
+        <div class="col-12 col-lg-5 d-none d-lg-block order-lg-2">
+          <section class="hero-panel text-white fade-up">
+            <span class="eyebrow"><i class="fa-solid fa-user-plus me-2"></i>Smart Registration</span>
+            <h1 class="hero-title mt-3">Create a standout registration flow with instant username checks.</h1>
+            <p class="hero-copy mb-4">The registration form includes AJAX Fetch integration, dynamic field messages, password matching, and responsive Bootstrap components.</p>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <div class="feature-chip"><i class="fa-solid fa-code"></i><span>AJAX + PHP</span></div>
+              </div>
+              <div class="col-sm-6">
+                <div class="feature-chip"><i class="fa-solid fa-user-check"></i><span>Username check</span></div>
+              </div>
+              <div class="col-sm-6">
+                <div class="feature-chip"><i class="fa-solid fa-window-maximize"></i><span>Responsive grid</span></div>
+              </div>
+              <div class="col-sm-6">
+                <div class="feature-chip"><i class="fa-solid fa-sparkles"></i><span>Modern styling</span></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-12 col-md-11 col-lg-7 col-xl-6 order-lg-1">
+          <div class="auth-card register-card fade-up delay-1">
+            <div class="auth-card-body">
+              <div class="text-center mb-4">
+                <div class="icon-bubble mx-auto mb-3"><i class="fa-solid fa-id-card"></i></div>
+                <h2 class="auth-title mb-2">Create Account</h2>
+                <p class="auth-subtitle mb-0">Fill in your details to register</p>
+              </div>
+
+              <div id="registerSuccess" class="alert alert-success d-none" role="alert" aria-live="polite"></div>
+
+              <form id="registerForm" novalidate>
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <div class="input-group input-group-lg auth-input-group">
+                      <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                      <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" autocomplete="name" required>
+                    </div>
+                    <small class="error-message" id="fullNameError"></small>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label for="username" class="form-label">Username</label>
+                    <div class="input-group input-group-lg auth-input-group">
+                      <span class="input-group-text"><i class="fa-solid fa-at"></i></span>
+                      <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" autocomplete="username" required>
+                    </div>
+                    <small class="error-message" id="usernameError"></small>
+                    <small class="availability-message" id="usernameStatus" aria-live="polite"></small>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label for="registerEmail" class="form-label">Email Address</label>
+                    <div class="input-group input-group-lg auth-input-group">
+                      <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                      <input type="email" class="form-control" id="registerEmail" name="email" placeholder="name@example.com" autocomplete="email" required>
+                    </div>
+                    <small class="error-message" id="registerEmailError"></small>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label for="mobileNumber" class="form-label">Mobile Number</label>
+                    <div class="input-group input-group-lg auth-input-group">
+                      <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                      <input type="tel" class="form-control" id="mobileNumber" name="mobile" placeholder="Enter 10-digit mobile number" autocomplete="tel" inputmode="numeric" maxlength="10" required>
+                    </div>
+                    <small class="error-message" id="mobileNumberError"></small>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label for="registerPassword" class="form-label">Password</label>
+                    <div class="input-group input-group-lg auth-input-group">
+                      <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+                      <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Minimum 6 characters" autocomplete="new-password" required>
+                      <button class="btn btn-password-toggle" type="button" data-toggle-password="registerPassword" aria-label="Show password">
+                        <i class="fa-solid fa-eye"></i>
+                      </button>
+                    </div>
+                    <small class="error-message" id="registerPasswordError"></small>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <div class="input-group input-group-lg auth-input-group">
+                      <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                      <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" required>
+                      <button class="btn btn-password-toggle" type="button" data-toggle-password="confirmPassword" aria-label="Show password">
+                        <i class="fa-solid fa-eye"></i>
+                      </button>
+                    </div>
+                    <small class="error-message" id="confirmPasswordError"></small>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-auth btn-lg w-100 mt-4">
+                  <span>Register</span>
+                  <i class="fa-solid fa-user-plus ms-2"></i>
+                </button>
+              </form>
+
+              <p class="switch-text text-center mt-4 mb-0">Already have an account? <a href="login.html" class="auth-link fw-semibold">Login Here</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+</body>
+</html>
